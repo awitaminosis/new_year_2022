@@ -12,17 +12,17 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 c = qb.Cube()
-c.r()
-c.u()
-c.r_prime()
-c.u_prime()
+# c.r()
+# c.u()
+# c.r_prime()
+# c.u_prime()
 print(cube_manipulations.cube_sides(c))
 print (cube_manipulations.print_cube(c))
 
 
 @app.get("/", response_class=HTMLResponse)
 async def respond_home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request, "cube": c})
+    return templates.TemplateResponse("home.html", {"request": request, "cube": cube_manipulations.cube_sides(c)})
 
 
 if __name__ == '__main__':

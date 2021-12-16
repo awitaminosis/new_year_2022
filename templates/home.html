@@ -10,8 +10,17 @@
     renderer.setSize( window.innerWidth - 130, window.innerHeight - 100);
     document.body.appendChild( renderer.domElement );
 
+    colors = {0: 0xFF0000, 1: 0x00FF00, 2: 0x0000FF, 3: 0xFFFFFF, 4: 0xFFFF00, 5: 0x888800}
+
+    back = {{cube['_B']}};
+    front = {{cube['_F']}};
+    down = {{cube['_D']}};
+    up = {{cube['_U']}};
+    left = {{cube['_L']}};
+    right = {{cube['_R']}};
+
     const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    const material = new THREE.MeshBasicMaterial( { color: colors[0] } );
     const cube = new THREE.Mesh( geometry, material );
     scene.add( cube );
 

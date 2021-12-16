@@ -46,6 +46,8 @@ function populate() {
     step = 1.1
     idx = 0;
 
+//    idx = drawCube(scene, 0, 0, 0, [0, 1, 2, 3, 4, 5], idx);
+
     //slice1
     idx = drawCube(scene, 0, 0, 0, [F[0][0], U[2][0], 6, L[0][2], 6, 6], idx);
     idx = drawCube(scene, step, 0, 0, [F[0][1], U[2][1], 6, 6, 6, 6], idx);
@@ -90,18 +92,18 @@ function populate() {
 
 function drawCube(scene, off_x, off_y, off_z, cubeColors, idx) {
     //front - top - down - left - right - back
-    var cubeToLoad = []
+
+    var loader = new THREE.TextureLoader();
+    materialArray = [];
+
     for (i=0; i<cubeColors.length; i++) {
-        cubeToLoad.push(faces[cubeColors[i]]);
+        color = faces[cubeColors[i]];
+        materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(color) } ));
     }
-    const envTexture = new THREE.CubeTextureLoader().load(cubeToLoad)
-    material.envMap = envTexture
 
     geometry[idx] = new THREE.BoxGeometry();
-    material = new THREE.MeshLambertMaterial();
-    material.envMap = envTexture
-    material[idx] = material;
-    mesh[idx] = new THREE.Mesh(geometry[idx], material[idx]);
+
+    mesh[idx] = new THREE.Mesh( geometry[idx], materialArray );
     mesh[idx].position.x = off_x;
     mesh[idx].position.y = off_y;
     mesh[idx].position.z = off_z;

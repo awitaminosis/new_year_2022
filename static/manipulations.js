@@ -1,6 +1,5 @@
 rotationControl = 0;
 var scene, renderer, camera;
-var cube;
 var controls;
 
 geometry = {};

@@ -2,98 +2,16 @@
 
 {% block content%}
 <script src="{{ url_for('static', path='/three.js') }}"></script>
-  <script>
-    rotationControl = 0;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth - 130, window.innerHeight - 100);
-    document.body.appendChild( renderer.domElement );
-
-    colors = {0: 0xFF0000, 1: 0x00FF00, 2: 0x0000FF, 3: 0xFFFFFF, 4: 0xFFFF00, 5: 0x888800}
-
-    back = {{cube['_B']}};
-    front = {{cube['_F']}};
-    down = {{cube['_D']}};
-    up = {{cube['_U']}};
-    left = {{cube['_L']}};
-    right = {{cube['_R']}};
-
-        geometry = {};
-        material = {};
-        mesh = {};
-
-    populateFront(scene, front);
-
-    function populateFront(scene, front) {
-
-
-        offsetx = 1.2;
-        offsety = 1.2;
-        for (i=0; i<3; i++) {
-            for (j=0; j< 3; j++) {
-                geometry[i+''+j] = new THREE.BoxGeometry();
-                material[i+''+j] = new THREE.MeshBasicMaterial( { color: colors[front[i][j]] } );
-                mesh[i+''+j] = new THREE.Mesh(geometry[i+''+j], material[i+''+j]);
-                mesh[i+''+j].position.x = j * offsetx;
-                mesh[i+''+j].position.y = i * offsety;
-            }
-        }
-        for (i=0; i<3; i++) {
-            for (j=0; j< 3; j++) {
-                if (i==0 && j == 0) {
-                    scene.add( mesh[i+''+j] );
-                } else {
-                    mesh[0+''+0].add( mesh[i+''+j] );
-                }
-            }
-        }
-
-        /*const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial( { color: colors[0] } );
-        mesh = new THREE.Mesh( geometry, material );
-        mesh.position.x = 0
-
-        const geometry2 = new THREE.BoxGeometry();
-        const material2 = new THREE.MeshBasicMaterial( { color: colors[1] } );
-        mesh2 = new THREE.Mesh( geometry2, material2 );
-        mesh2.position.x = 2
-
-        const geometry3 = new THREE.BoxGeometry();
-        const material3 = new THREE.MeshBasicMaterial( { color: colors[2] } );
-        mesh3 = new THREE.Mesh( geometry3, material3 );
-        mesh3.position.x = 4
-
-        scene.add( mesh );
-        mesh.add( mesh2 );
-        mesh.add( mesh3 );
-        */
-    }
-
-    camera.position.z = 5;
-
-    const animate = function () {
-        requestAnimationFrame( animate );
-
-        if (rotationControl == 1) {
-            mesh['00'].rotation.x += 0.01;
-            mesh['00'].rotation.y += 0.01;
-        } else if (rotationControl == -1) {
-            mesh['00'].rotation.x -= 0.01;
-            mesh['00'].rotation.y -= 0.01;
-        }
-
-        renderer.render( scene, camera );
-    };
-
-    animate();
-
-    function rotate(rot) {
-        rotationControl = rot;
-    }
+<script>
+    B = {{cube['_B']}};
+    F = {{cube['_F']}};
+    D = {{cube['_D']}};
+    U = {{cube['_U']}};
+    L = {{cube['_L']}};
+    R = {{cube['_R']}};
 </script>
+
+<script src="{{ url_for('static', path='/manipulations.js') }}"></script>
 
     <div class="tier tier-1">
         <div class="btn btn-primary mrl">R</div>  <div class="btn btn-primary mll">R'</div>

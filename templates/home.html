@@ -3,6 +3,8 @@
 {% block content%}
 <script src="{{ url_for('static', path='/three.js') }}"></script>
   <script>
+    rotationControl = 0;
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
@@ -19,23 +21,78 @@
     left = {{cube['_L']}};
     right = {{cube['_R']}};
 
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial( { color: colors[0] } );
-    const cube = new THREE.Mesh( geometry, material );
-    scene.add( cube );
+        geometry = {};
+        material = {};
+        mesh = {};
+
+    populateFront(scene, front);
+
+    function populateFront(scene, front) {
+
+
+        offsetx = 1.2;
+        offsety = 1.2;
+        for (i=0; i<3; i++) {
+            for (j=0; j< 3; j++) {
+                geometry[i+''+j] = new THREE.BoxGeometry();
+                material[i+''+j] = new THREE.MeshBasicMaterial( { color: colors[front[i][j]] } );
+                mesh[i+''+j] = new THREE.Mesh(geometry[i+''+j], material[i+''+j]);
+                mesh[i+''+j].position.x = j * offsetx;
+                mesh[i+''+j].position.y = i * offsety;
+            }
+        }
+        for (i=0; i<3; i++) {
+            for (j=0; j< 3; j++) {
+                if (i==0 && j == 0) {
+                    scene.add( mesh[i+''+j] );
+                } else {
+                    mesh[0+''+0].add( mesh[i+''+j] );
+                }
+            }
+        }
+
+        /*const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshBasicMaterial( { color: colors[0] } );
+        mesh = new THREE.Mesh( geometry, material );
+        mesh.position.x = 0
+
+        const geometry2 = new THREE.BoxGeometry();
+        const material2 = new THREE.MeshBasicMaterial( { color: colors[1] } );
+        mesh2 = new THREE.Mesh( geometry2, material2 );
+        mesh2.position.x = 2
+
+        const geometry3 = new THREE.BoxGeometry();
+        const material3 = new THREE.MeshBasicMaterial( { color: colors[2] } );
+        mesh3 = new THREE.Mesh( geometry3, material3 );
+        mesh3.position.x = 4
+
+        scene.add( mesh );
+        mesh.add( mesh2 );
+        mesh.add( mesh3 );
+        */
+    }
 
     camera.position.z = 5;
 
     const animate = function () {
         requestAnimationFrame( animate );
 
-        //cube.rotation.x += 0.01;
-        //cube.rotation.y += 0.01;
+        if (rotationControl == 1) {
+            mesh['00'].rotation.x += 0.01;
+            mesh['00'].rotation.y += 0.01;
+        } else if (rotationControl == -1) {
+            mesh['00'].rotation.x -= 0.01;
+            mesh['00'].rotation.y -= 0.01;
+        }
 
         renderer.render( scene, camera );
     };
 
     animate();
+
+    function rotate(rot) {
+        rotationControl = rot;
+    }
 </script>
 
     <div class="tier tier-1">
@@ -65,7 +122,7 @@
 
     <div class="bottom-control">
         <div class="black">Rotate camera:</div>
-        <div class="btn btn-primary mrl">clockwise</div> <div class="btn btn-primary mrl">counterclockwise</div>
+        <div class="btn btn-primary mrl" onclick="rotate(1)">clockwise</div> <div class="btn btn-primary mrl" onclick="rotate(0)">stop</div> <div class="btn btn-primary mrl" onclick="rotate(-1)">counterclockwise</div>
     </div>
 
 {% endblock %}

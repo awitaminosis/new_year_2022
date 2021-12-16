@@ -1,12 +1,62 @@
 {% extends "base.html" %}
 
 {% block content%}
+<script src="{{ url_for('static', path='/three.js') }}"></script>
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-<div class="text-center my-5 mx-5">
-    <div class="text-center my-5 mx-5">
-        <a class="btn btn-primary" style="float:left" href="/easy/">easy</a>
-        <a class="btn btn-primary" style="float:right" href="/hard/">hard</a>
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth - 130, window.innerHeight - 100);
+    document.body.appendChild( renderer.domElement );
+
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    const cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+
+    camera.position.z = 5;
+
+    const animate = function () {
+        requestAnimationFrame( animate );
+
+        //cube.rotation.x += 0.01;
+        //cube.rotation.y += 0.01;
+
+        renderer.render( scene, camera );
+    };
+
+    animate();
+</script>
+
+    <div class="tier tier-1">
+        <div class="btn btn-primary mrl">R</div>  <div class="btn btn-primary mll">R'</div>
     </div>
-</div>
+
+    <div class="tier tier-2">
+        <div class="btn btn-primary mrl">L</div>  <div class="btn btn-primary mll">L'</div>
+    </div>
+
+    <div class="tier tier-3">
+        <div class="btn btn-primary mrl">T</div>  <div class="btn btn-primary mll">T'</div>
+    </div>
+
+    <div class="tier tier-4">
+        <div class="btn btn-primary mrl">D</div>  <div class="btn btn-primary mll">D'</div>
+    </div>
+
+    <div class="tier tier-5">
+        <div class="btn btn-primary mrl">F</div>  <div class="btn btn-primary mll">F'</div>
+    </div>
+
+    <div class="tier tier-6">
+        <div class="btn btn-primary mrl">B</div>  <div class="btn btn-primary mll">B'</div>
+    </div>
+
+
+    <div class="bottom-control">
+        <div class="black">Rotate camera:</div>
+        <div class="btn btn-primary mrl">clockwise</div> <div class="btn btn-primary mrl">counterclockwise</div>
+    </div>
 
 {% endblock %}

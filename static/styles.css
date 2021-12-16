@@ -1,3 +1,50 @@
 h1 {
     color: green;
 }
+
+.cube {
+    color: red;
+}
+
+/******/
+.abs {
+    position: absolute;
+}
+
+.tier {
+    position: absolute;
+    right: 40px;
+}
+.tier-1 {
+    top: 10px;
+}
+
+.tier-2 {
+    top: 60px;
+}
+
+.tier-3 {
+    top: 110px;
+}
+
+.tier-4 {
+    top: 160px;
+}
+
+.tier-5 {
+    top: 210px;
+}
+
+.tier-6 {
+    top: 260px;
+}
+
+.bottom-control {
+    position:absolute;
+    bottom: 30px;
+    left: 10px;
+}
+
+.black {
+color:black;
+}

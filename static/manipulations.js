@@ -1,71 +1,93 @@
 rotationControl = 0;
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-ambient = new THREE.AmbientLight(0xDEDEDE);
-scene.add(ambient);
-
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth - 130, window.innerHeight - 100);
-document.body.appendChild( renderer.domElement );
+var scene, renderer, camera;
+var cube;
+var controls;
 
 geometry = {};
 material = {};
 mesh = {};
 
-faces = [
-    'static/red.png',
-    'static/green.png',
-    'static/white.png',
-    'static/yellow.png',
-    'static/blue.png',
-    'static/orange.png',
-    'static/empty.png', //    'static/black.png'
-]
+function animate () {
+    controls.update();
+    requestAnimationFrame( animate );
+    renderer.render( scene, camera );
+};
 
-step = 1.1
-idx = 0;
+function init() {
+    renderer = new THREE.WebGLRenderer( {antialias:true} );
+    renderer.setSize(window.innerWidth - 130, window.innerHeight - 100);
+    document.body.appendChild (renderer.domElement);
 
-//slice1
-idx = drawCube(scene, 0, 0, 0, [F[0][0], U[2][0], 6, L[0][2], 6, 6], idx);
-idx = drawCube(scene, step, 0, 0, [F[0][1], U[2][1], 6, 6, 6, 6], idx);
-idx = drawCube(scene, 2*step, 0, 0, [F[0][2], U[2][2], 6, R[0][0], 6, 6], idx);
+    scene = new THREE.Scene();
 
-idx = drawCube(scene, 0, step, 0, [F[1][0], 6, 6, L[1][2], 6, 6], idx);
-idx = drawCube(scene, step, step, 0, [F[1][1], 6, 6, 6, 6, 6], idx);
-idx = drawCube(scene, 2*step, step, 0, [F[1][2], 6, 6, R[1][0], 6, 6], idx);
+    populate();
 
-idx = drawCube(scene, 0, 2*step, 0, [F[2][0], D[2][0], 6, L[2][2], 6, 6], idx);
-idx = drawCube(scene, step, 2*step, 0, [F[2][1], D[2][1], 6, 6, 6, 6], idx);
-idx = drawCube(scene, 2*step, 2*step, 0, [F[2][2], D[2][2], 6, R[2][0], 6, 6], idx);
+    ambient = new THREE.AmbientLight(0xDEDEDE);
+    scene.add(ambient);
+
+    camera = new THREE.PerspectiveCamera (15, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 1;
+    camera.position.y = 20;
+    camera.lookAt (new THREE.Vector3(0,0,0));
+
+    controls = new THREE.OrbitControls (camera, renderer.domElement);
+}
+
+function populate() {
+    faces = [
+        'static/red.png',
+        'static/green.png',
+        'static/white.png',
+        'static/yellow.png',
+        'static/blue.png',
+        'static/orange.png',
+        'static/empty.png', //    'static/black.png'
+    ];
+
+    step = 1.1
+    idx = 0;
+
+    //slice1
+    idx = drawCube(scene, 0, 0, 0, [F[0][0], U[2][0], 6, L[0][2], 6, 6], idx);
+    idx = drawCube(scene, step, 0, 0, [F[0][1], U[2][1], 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, 0, 0, [F[0][2], U[2][2], 6, R[0][0], 6, 6], idx);
+
+    idx = drawCube(scene, 0, step, 0, [F[1][0], 6, 6, L[1][2], 6, 6], idx);
+    idx = drawCube(scene, step, step, 0, [F[1][1], 6, 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, step, 0, [F[1][2], 6, 6, R[1][0], 6, 6], idx);
+
+    idx = drawCube(scene, 0, 2*step, 0, [F[2][0], D[2][0], 6, L[2][2], 6, 6], idx);
+    idx = drawCube(scene, step, 2*step, 0, [F[2][1], D[2][1], 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, 2*step, 0, [F[2][2], D[2][2], 6, R[2][0], 6, 6], idx);
 
 
-//slice2
-idx = drawCube(scene, 0, 0, step, [6, U[1][0], 6, L[0][1], 6, 6], idx);
-idx = drawCube(scene, step, 0, step, [6, U[1][1], 6, 6, 6, 6], idx);
-idx = drawCube(scene, 2*step, 0, step, [6, U[1][2], 6, R[0][1], 6, 6], idx);
+    //slice2
+    idx = drawCube(scene, 0, 0, step, [6, U[1][0], 6, L[0][1], 6, 6], idx);
+    idx = drawCube(scene, step, 0, step, [6, U[1][1], 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, 0, step, [6, U[1][2], 6, R[0][1], 6, 6], idx);
 
-idx = drawCube(scene, 0, step, step, [6, 6, 6, L[1][1], 6, 6], idx);
-idx = drawCube(scene, step, step, step, [6, 6, 6, 6, 6, 6], idx);
-idx = drawCube(scene, 2*step, step, step, [6, 6, 6, R[1][1], 6, 6], idx);
+    idx = drawCube(scene, 0, step, step, [6, 6, 6, L[1][1], 6, 6], idx);
+    idx = drawCube(scene, step, step, step, [6, 6, 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, step, step, [6, 6, 6, R[1][1], 6, 6], idx);
 
-idx = drawCube(scene, 0, 2*step, step, [6, 6, D[1][0], L[2][1], 6, 6], idx);
-idx = drawCube(scene, step, 2*step, step, [6, D[1][1], 6, 6, 6, 6], idx);
-idx = drawCube(scene, 2*step, 2*step, step, [6, D[1][2], 6, R[2][1], 6, 6], idx);
+    idx = drawCube(scene, 0, 2*step, step, [6, 6, D[1][0], L[2][1], 6, 6], idx);
+    idx = drawCube(scene, step, 2*step, step, [6, D[1][1], 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, 2*step, step, [6, D[1][2], 6, R[2][1], 6, 6], idx);
 
-//slice3
-idx = drawCube(scene, 0, 0, 2*step, [6, U[0][0], 6, L[0][0], 6, B[0][0]], idx);
-idx = drawCube(scene, step, 0, 2*step, [6, U[0][1], 6, 6, 6, B[0][1]], idx);
-idx = drawCube(scene, 2*step, 0, 2*step, [6, U[0][2], 6, R[0][2], 6, B[0][2]], idx);
+    //slice3
+    idx = drawCube(scene, 0, 0, 2*step, [6, U[0][0], 6, L[0][0], 6, B[0][0]], idx);
+    idx = drawCube(scene, step, 0, 2*step, [6, U[0][1], 6, 6, 6, B[0][1]], idx);
+    idx = drawCube(scene, 2*step, 0, 2*step, [6, U[0][2], 6, R[0][2], 6, B[0][2]], idx);
 
-idx = drawCube(scene, 0, step, 2*step, [6, 6, 6, L[1][0], 6, B[1][0]], idx);
-idx = drawCube(scene, step, step, 2*step, [6, 6, 6, 6, 6, B[1][1]], idx);
-idx = drawCube(scene, 2*step, step, 2*step, [6, 6, 6, R[1][2], 6, B[1][2]], idx);
+    idx = drawCube(scene, 0, step, 2*step, [6, 6, 6, L[1][0], 6, B[1][0]], idx);
+    idx = drawCube(scene, step, step, 2*step, [6, 6, 6, 6, 6, B[1][1]], idx);
+    idx = drawCube(scene, 2*step, step, 2*step, [6, 6, 6, R[1][2], 6, B[1][2]], idx);
 
-idx = drawCube(scene, 0, 2*step, 2*step, [6, 6, D[0][0], L[2][0], 6, B[2][0]], idx);
-idx = drawCube(scene, step, 2*step, 2*step, [6, D[0][1], 6, 6, 6, B[2][1]], idx);
-idx = drawCube(scene, 2*step, 2*step, 2*step, [6, D[0][2], 6, R[2][2], 6, B[2][2]], idx);
+    idx = drawCube(scene, 0, 2*step, 2*step, [6, 6, D[0][0], L[2][0], 6, B[2][0]], idx);
+    idx = drawCube(scene, step, 2*step, 2*step, [6, D[0][1], 6, 6, 6, B[2][1]], idx);
+    idx = drawCube(scene, 2*step, 2*step, 2*step, [6, D[0][2], 6, R[2][2], 6, B[2][2]], idx);
+}
+
 
 function drawCube(scene, off_x, off_y, off_z, cubeColors, idx) {
     //front - top - down - left - right - back
@@ -94,27 +116,12 @@ function drawCube(scene, off_x, off_y, off_z, cubeColors, idx) {
     return idx;
 }
 
-camera.position.z = 5;
-
-mesh[0].rotation.x = -0.75;
-mesh[0].rotation.y = 0.5;
-
-const animate = function () {
-    requestAnimationFrame( animate );
-
-    if (rotationControl == 1) {
-        mesh[0].rotation.x += 0.01;
-        mesh[0].rotation.y += 0.01;
-    } else if (rotationControl == -1) {
-        mesh[0].rotation.x -= 0.01;
-        mesh[0].rotation.y -= 0.01;
-    }
-
-    renderer.render( scene, camera );
-};
-
-animate();
-
 function rotate(rot) {
     rotationControl = rot;
 }
+
+init();
+animate();
+
+mesh[0].rotation.x = -0.75;
+mesh[0].rotation.y = 0.5;

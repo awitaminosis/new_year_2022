@@ -63,10 +63,11 @@ async def respond_home(request: Request):
     cube_id = request.cookies.get('cube_id', None)
     if cube_id is None:
         cube_id = uuid.uuid4()
-        # await initial_scramble(cube_id)
+
     c = cubes.get(cube_id, None)
     if c is None:
         c = qb.Cube()
+        await initial_scramble(cube_id)
 
     await scramble_cube(c, cube_id)
 

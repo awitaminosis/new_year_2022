@@ -98,6 +98,10 @@ async def rotate_r(request: Request, m: str):
     return RedirectResponse('/')
 
 
+@app.get('/MjAyMg==')
+async def congratulate(request: Request):
+    return {"2022:2022"}
+
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run(app, host='0.0.0.0', port=8001)

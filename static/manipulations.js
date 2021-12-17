@@ -34,13 +34,13 @@ function init() {
 
 function populate() {
     faces = [
-        'static/white.png',
-        'static/yellow.png',
-        'static/red.png',
-        'static/orange.png',
-        'static/green.png',
-        'static/blue.png',
-        'static/black.png'
+        'static/img/white.png',
+        'static/img/yellow.png',
+        'static/img/red.png',
+        'static/img/orange.png',
+        'static/img/green.png',
+        'static/img/blue.png',
+        'static/img/black.png'
     ];
 
     step = 1.1

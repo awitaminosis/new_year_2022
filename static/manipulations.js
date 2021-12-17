@@ -34,11 +34,11 @@ function init() {
 
 function populate() {
     faces = [
-        'static/red.png',
-        'static/green.png',
         'static/white.png',
         'static/yellow.png',
         'static/blue.png',
+        'static/green.png',
+        'static/red.png',
         'static/orange.png',
         'static/empty.png', //    'static/black.png'
     ];
@@ -48,58 +48,67 @@ function populate() {
 
 //    idx = drawCube(scene, 0, 0, 0, [0, 1, 2, 3, 4, 5], idx);
 
+    //front - top - down - left - right - back
+    //---right + left + top + bottom + front + back
     //slice1
+
     idx = drawCube(scene, 0, 0, 0, [F[0][0], U[2][0], 6, L[0][2], 6, 6], idx);
     idx = drawCube(scene, step, 0, 0, [F[0][1], U[2][1], 6, 6, 6, 6], idx);
-    idx = drawCube(scene, 2*step, 0, 0, [F[0][2], U[2][2], 6, R[0][0], 6, 6], idx);
+    idx = drawCube(scene, 2*step, 0, 0, [F[0][2], U[2][2], 6, 6, R[0][0], 6], idx);
 
-    idx = drawCube(scene, 0, step, 0, [F[1][0], 6, 6, L[1][2], 6, 6], idx);
-    idx = drawCube(scene, step, step, 0, [F[1][1], 6, 6, 6, 6, 6], idx);
-    idx = drawCube(scene, 2*step, step, 0, [F[1][2], 6, 6, R[1][0], 6, 6], idx);
+    idx = drawCube(scene, 0, -step, 0, [F[1][0], 6, 6, L[1][2], 6, 6], idx);
+    idx = drawCube(scene, step, -step, 0, [F[1][1], 6, 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, -step, 0, [F[1][2], 6, 6, 6, R[1][0], 6], idx);
 
-    idx = drawCube(scene, 0, 2*step, 0, [F[2][0], D[2][0], 6, L[2][2], 6, 6], idx);
-    idx = drawCube(scene, step, 2*step, 0, [F[2][1], D[2][1], 6, 6, 6, 6], idx);
-    idx = drawCube(scene, 2*step, 2*step, 0, [F[2][2], D[2][2], 6, R[2][0], 6, 6], idx);
+    idx = drawCube(scene, 0, -2*step, 0, [F[2][0], 6, D[2][0], L[2][2], 6, 6], idx);
+    idx = drawCube(scene, step, -2*step, 0, [F[2][1], 6, D[2][1], 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, -2*step, 0, [F[2][2], 6, D[2][2], 6, R[2][0], 6], idx);
 
-
+    //front - top - down - left - right - back
+    //---right + left + top + bottom + front + back
     //slice2
-    idx = drawCube(scene, 0, 0, step, [6, U[1][0], 6, L[0][1], 6, 6], idx);
-    idx = drawCube(scene, step, 0, step, [6, U[1][1], 6, 6, 6, 6], idx);
-    idx = drawCube(scene, 2*step, 0, step, [6, U[1][2], 6, R[0][1], 6, 6], idx);
+    idx = drawCube(scene, 0, -0, -step, [6, U[1][0], 6, L[0][1], 6, 6], idx);
+    idx = drawCube(scene, step, -0, -step, [6, U[1][1], 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, -0, -step, [6, U[1][2], 6, 6, R[0][1], 6], idx);
 
-    idx = drawCube(scene, 0, step, step, [6, 6, 6, L[1][1], 6, 6], idx);
-    idx = drawCube(scene, step, step, step, [6, 6, 6, 6, 6, 6], idx);
-    idx = drawCube(scene, 2*step, step, step, [6, 6, 6, R[1][1], 6, 6], idx);
+    idx = drawCube(scene, 0, -step, -step, [6, 6, 6, L[1][1], 6, 6], idx);
+    idx = drawCube(scene, step, -step, -step, [6, 6, 6, 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, -step, -step, [6, 6, 6, 6, R[1][1], 6], idx);
 
-    idx = drawCube(scene, 0, 2*step, step, [6, 6, D[1][0], L[2][1], 6, 6], idx);
-    idx = drawCube(scene, step, 2*step, step, [6, D[1][1], 6, 6, 6, 6], idx);
-    idx = drawCube(scene, 2*step, 2*step, step, [6, D[1][2], 6, R[2][1], 6, 6], idx);
+    idx = drawCube(scene, 0, -2*step, -step, [6, 6, D[1][0], L[2][1], 6, 6], idx);
+    idx = drawCube(scene, step, -2*step, -step, [6, 6, D[1][1], 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, -2*step, -step, [6, 6, D[1][2], 6, R[2][1], 6], idx);
 
+    //front - top - down - left - right - back
+    //---right + left + top + bottom + front + back
     //slice3
-    idx = drawCube(scene, 0, 0, 2*step, [6, U[0][0], 6, L[0][0], 6, B[0][0]], idx);
-    idx = drawCube(scene, step, 0, 2*step, [6, U[0][1], 6, 6, 6, B[0][1]], idx);
-    idx = drawCube(scene, 2*step, 0, 2*step, [6, U[0][2], 6, R[0][2], 6, B[0][2]], idx);
+    idx = drawCube(scene, 0, 0, -2*step, [6, U[0][0], 6, L[0][0], 6, B[0][0]], idx);
+    idx = drawCube(scene, step, 0, -2*step, [6, U[0][1], 6, 6, 6, B[0][1]], idx);
+    idx = drawCube(scene, 2*step, 0, -2*step, [6, U[0][2], 6, 6, R[0][2], B[0][2]], idx);
 
-    idx = drawCube(scene, 0, step, 2*step, [6, 6, 6, L[1][0], 6, B[1][0]], idx);
-    idx = drawCube(scene, step, step, 2*step, [6, 6, 6, 6, 6, B[1][1]], idx);
-    idx = drawCube(scene, 2*step, step, 2*step, [6, 6, 6, R[1][2], 6, B[1][2]], idx);
+    idx = drawCube(scene, 0, -step, -2*step, [6, 6, 6, L[1][0], 6, B[1][0]], idx);
+    idx = drawCube(scene, step, -step, -2*step, [6, 6, 6, 6, 6, B[1][1]], idx);
+    idx = drawCube(scene, 2*step, -step, -2*step, [6, 6, 6, 6, R[1][2], B[1][2]], idx);
 
-    idx = drawCube(scene, 0, 2*step, 2*step, [6, 6, D[0][0], L[2][0], 6, B[2][0]], idx);
-    idx = drawCube(scene, step, 2*step, 2*step, [6, D[0][1], 6, 6, 6, B[2][1]], idx);
-    idx = drawCube(scene, 2*step, 2*step, 2*step, [6, D[0][2], 6, R[2][2], 6, B[2][2]], idx);
+    idx = drawCube(scene, 0, -2*step, -2*step, [6, 6, D[0][0], L[2][0], 6, B[2][0]], idx);
+    idx = drawCube(scene, step, -2*step, -2*step, [6, 6, D[0][1], 6, 6, B[2][1]], idx);
+    idx = drawCube(scene, 2*step, -2*step, -2*step, [6, 6, D[0][2], 6, R[2][2], B[2][2]], idx);
 }
 
 
 function drawCube(scene, off_x, off_y, off_z, cubeColors, idx) {
     //front - top - down - left - right - back
-
+    //---right + left + top + bottom + front + back
     var loader = new THREE.TextureLoader();
     materialArray = [];
 
-    for (i=0; i<cubeColors.length; i++) {
-        color = faces[cubeColors[i]];
-        materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(color) } ));
-    }
+    //MeshBasicMaterial has a side sequence unconvinient for standard cube. so not a for loop but a mapping
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[4]]) } )); //right
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[3]]) } )); //left
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[1]]) } )); //top
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[2]]) } )); //bottom
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[0]]) } )); //front
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[5]]) } )); //back
 
     geometry[idx] = new THREE.BoxGeometry();
 

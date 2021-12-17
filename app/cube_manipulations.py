@@ -4,10 +4,10 @@ import colorama
 
 c = qb.Cube()
 # R U R' U'
-c.r()
-c.u()
-c.r_prime()
-c.u_prime()
+# c.r()
+# c.u()
+# c.r_prime()
+# c.u_prime()
 
 def print_cube(c):
     DIMENSION = 3

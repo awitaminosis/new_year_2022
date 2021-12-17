@@ -46,6 +46,7 @@
     <div class="bottom-control">
         <div class="black">Rotate camera:</div>
         <div class="btn btn-primary mrl" onclick="rotate(1)">clockwise</div> <div class="btn btn-primary mrl" onclick="rotate(0)">stop</div> <div class="btn btn-primary mrl" onclick="rotate(-1)">counterclockwise</div>
+        <div onclick="$('.history').show()">hint? <span class="history">{{history}}</span></div>
     </div>
 
 {% endblock %}

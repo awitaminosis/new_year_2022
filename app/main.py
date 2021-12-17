@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi import Cookie
 from starlette.responses import RedirectResponse
 import uuid
 
@@ -51,7 +50,7 @@ async def scramble_cube(c, cube_id):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def respond_home(request: Request, session: str = Cookie(None)):
+async def respond_home(request: Request):
     cube_id = request.cookies.get('cube_id', None)
     if cube_id is None:
         cube_id = uuid.uuid4()
@@ -62,7 +61,13 @@ async def respond_home(request: Request, session: str = Cookie(None)):
     print(cube_manipulations.print_cube(c))
     print(history)
 
-    return templates.TemplateResponse("home.html", {"request": request, "cube": cube_manipulations.cube_sides(c), 'cube_id': cube_id})
+    printable_history = 'No history yet' if history.get(cube_id, None) is None else [x[0] for x in history.get(cube_id, None)]
+
+    return templates.TemplateResponse("home.html", {"request": request,
+                                                    "cube": cube_manipulations.cube_sides(c),
+                                                    'cube_id': cube_id,
+                                                    'history': printable_history
+                                                    })
 
 @app.get("/move/{m}")
 async def rotate_r(request: Request, m: str):

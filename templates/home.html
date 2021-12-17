@@ -12,30 +12,34 @@
     R = {{cube['_R']}};
 </script>
 
+<script>
+    document.cookie = 'cube_id={{cube_id}};"/"';
+</script>
+
 <script src="{{ url_for('static', path='/manipulations.js') }}"></script>
 
     <div class="tier tier-1">
-        <div class="btn btn-primary mrl">R</div>  <div class="btn btn-primary mll">R'</div>
+        <a href="/move/r/" class="btn btn-primary mrl">R</a>  <a href="/move/r_/" class="btn btn-primary mll">R'</a>
     </div>
 
     <div class="tier tier-2">
-        <div class="btn btn-primary mrl">L</div>  <div class="btn btn-primary mll">L'</div>
+        <a href="/move/l/" class="btn btn-primary mrl">L</a>  <a href="/move/l_/" class="btn btn-primary mll">L'</a>
     </div>
 
     <div class="tier tier-3">
-        <div class="btn btn-primary mrl">T</div>  <div class="btn btn-primary mll">T'</div>
+        <a href="/move/t/" class="btn btn-primary mrl">T</a>  <a href="/move/t_/" class="btn btn-primary mll">T'</a>
     </div>
 
     <div class="tier tier-4">
-        <div class="btn btn-primary mrl">D</div>  <div class="btn btn-primary mll">D'</div>
+        <a href="/move/d/" class="btn btn-primary mrl">D</a>  <a href="/move/d_/" class="btn btn-primary mll">D'</a>
     </div>
 
     <div class="tier tier-5">
-        <div class="btn btn-primary mrl">F</div>  <div class="btn btn-primary mll">F'</div>
+        <a href="/move/f/" class="btn btn-primary mrl">F</a>  <a href="/move/f_/" class="btn btn-primary mll">F'</a>
     </div>
 
     <div class="tier tier-6">
-        <div class="btn btn-primary mrl">B</div>  <div class="btn btn-primary mll">B'</div>
+        <a href="/move/b/" class="btn btn-primary mrl">B</a>  <a href="/move/b_/" class="btn btn-primary mll">B'</a>
     </div>
 
 

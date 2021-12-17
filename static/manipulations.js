@@ -36,11 +36,11 @@ function populate() {
     faces = [
         'static/white.png',
         'static/yellow.png',
-        'static/blue.png',
-        'static/green.png',
         'static/red.png',
         'static/orange.png',
-        'static/empty.png', //    'static/black.png'
+        'static/green.png',
+        'static/blue.png',
+        'static/black.png'
     ];
 
     step = 1.1

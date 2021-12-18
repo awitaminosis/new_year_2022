@@ -14,7 +14,7 @@ function animate () {
 
 function init() {
     renderer = new THREE.WebGLRenderer( {antialias:true} );
-    renderer.setSize(window.innerWidth - 130, window.innerHeight - 120);
+    renderer.setSize(window.innerWidth - 130, window.innerHeight - 80);
     document.body.appendChild (renderer.domElement);
 
     scene = new THREE.Scene();

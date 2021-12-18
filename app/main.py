@@ -54,12 +54,15 @@ async def initial_scramble(cube_id):
     history[cube_id] = list()
 
     # history[cube_id].append(['r', 1])
+    # history[cube_id].append(['r', 1])
+    # history[cube_id].append(['f', 1])
+    # history[cube_id].append(['d', 1])
     # history[cube_id].append(['u', 1])
     # history[cube_id].append(['r_', 1])
     # history[cube_id].append(['u_', 1])
-    return
+    # return
 
-    iter_count = random.randint(2, 3)
+    iter_count = random.randint(1, 4)
     for i in range(iter_count):
         action = random.choice(['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_'])
         history[cube_id].append([action, 1])
@@ -80,9 +83,9 @@ async def respond_home(request: Request):
 
     cubes[cube_id] = c
 
-    print(cube_manipulations.cube_sides(c))
-    print(cube_manipulations.print_cube(c))
-    print(history)
+    # print(cube_manipulations.cube_sides(c))
+    # print(cube_manipulations.print_cube(c))
+    # print(history)
 
     printable_history = 'No history yet' if history.get(cube_id, None) is None else [x[0] for x in history.get(cube_id, None)]
 

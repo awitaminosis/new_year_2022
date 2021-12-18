@@ -107,7 +107,8 @@ async def rotate_r(request: Request, m: str):
 
 @app.get('/MjAyMg==')
 async def congratulate(request: Request):
-    return {"2022: Happy new year! By the way, try base64 decode this url"}
+    return templates.TemplateResponse("found.html", {"request": request})
+
 
 if __name__ == '__main__':
     import uvicorn

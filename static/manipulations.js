@@ -14,7 +14,7 @@ function animate () {
 
 function init() {
     renderer = new THREE.WebGLRenderer( {antialias:true} );
-    renderer.setSize(window.innerWidth - 130, window.innerHeight - 100);
+    renderer.setSize(window.innerWidth - 130, window.innerHeight - 120);
     document.body.appendChild (renderer.domElement);
 
     scene = new THREE.Scene();
@@ -33,16 +33,6 @@ function init() {
 }
 
 function populate() {
-    faces = [
-        'static/img/white.png',
-        'static/img/yellow.png',
-        'static/img/red.png',
-        'static/img/orange.png',
-        'static/img/green.png',
-        'static/img/blue.png',
-        'static/img/black.png'
-    ];
-
     step = 1.1
     idx = 0;
 
@@ -97,18 +87,85 @@ function populate() {
 
 
 function drawCube(scene, off_x, off_y, off_z, cubeColors, idx) {
-    //front - top - down - left - right - back
-    //---right + left + top + bottom + front + back
+    faces = [
+        'static/img/white.png',         //0
+        'static/img/yellow.png',        //1
+        'static/img/red.png',           //2
+        'static/img/orange.png',        //3
+        'static/img/green.png',         //4
+        'static/img/blue.png',          //5
+        'static/img/black.png', //6 meaning empty
+        //special
+        '/static/img/special/M.png',    //7
+        '/static/img/special/j.png',    //8
+        '/static/img/special/A.png',    //9
+        '/static/img/special/y.png',    //10
+        '/static/img/special/g.png',    //11
+        '/static/img/special/=.png',    //12
+    ];
+
+    //sequence from model:      front - top - down - left - right - back
+    //sequence for renderer:    right + left + top + bottom + front + back
     var loader = new THREE.TextureLoader();
     materialArray = [];
 
-    //MeshBasicMaterial has a side sequence unconvinient for standard cube. so not a for loop but a mapping
-    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[4]]) } )); //right
-    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[3]]) } )); //left
-    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[1]]) } )); //top
-    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[2]]) } )); //bottom
-    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[0]]) } )); //front
-    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(faces[cubeColors[5]]) } )); //back
+
+
+    //--special case?--{
+    var wPos = false;
+    var specialValue = false;
+    for (i=0; i<cubeColors.length; i++) {
+        if (cubeColors[i] == 0) {
+            wPos = i;
+        }
+    }
+
+    if (wPos !== false) {
+        sorted = cubeColors.filter(side => side!=6).sort();
+        if (sorted.length == 3 && sorted[0] === 0 && sorted[1] == 3 && sorted[2] == 5) {
+            specialValue = 7
+        }
+        if (sorted.length == 2 && sorted[0] === 0 && sorted[1] == 5) {
+            specialValue = 8
+        }
+        if (sorted.length == 3 && sorted[0] === 0 && sorted[1] == 2 && sorted[2] == 5) {
+            specialValue = 9
+        }
+        if (sorted.length == 2 && sorted[0] === 0 && sorted[1] == 3) {
+            specialValue = 10
+        }
+        if (sorted.length == 1 && sorted[0] === 0) {
+            specialValue = 7
+        }
+        if (sorted.length == 2 && sorted[0] === 0 && sorted[1] == 2) {
+            specialValue = 11
+        }
+        if (sorted.length == 3 && sorted[0] === 0 && sorted[1] == 3 && sorted[2] == 4) {
+            specialValue = 12
+        }
+        if (sorted.length == 2 && sorted[0] === 0 && sorted[1] == 4) {
+            specialValue = 12
+        }
+        if (specialValue !== false) {
+            cubeColors[wPos] = specialValue
+        }
+    }
+    //--special case?--}
+
+    s_right = faces[cubeColors[4]];
+    s_left = faces[cubeColors[3]];
+    s_top = faces[cubeColors[1]];
+    s_bottom = faces[cubeColors[2]];
+    s_front = faces[cubeColors[0]];
+    s_back = faces[cubeColors[5]];
+
+    //MeshBasicMaterial has a side sequence inconvenient for standard cube. so not a for loop but a mapping
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(s_right) } )); //right
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(s_left) } )); //left
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(s_top) } )); //top
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(s_bottom) } )); //bottom
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(s_front) } )); //front
+    materialArray.push(new THREE.MeshBasicMaterial( { map: loader.load(s_back) } )); //back
 
     geometry[idx] = new THREE.BoxGeometry();
 

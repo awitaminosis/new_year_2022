@@ -52,10 +52,15 @@ async def scramble_cube(c, cube_id):
 
 async def initial_scramble(cube_id):
     history[cube_id] = list()
-    iter_count = random.randint(2, 3)
-    for i in range(iter_count):
-        action = random.choice(['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_'])
-        history[cube_id].append([action, 1])
+
+    # history[cube_id].append(['b', 1])
+    # history[cube_id].append(['b', 1])
+    return
+
+    # iter_count = random.randint(2, 3)
+    # for i in range(iter_count):
+    #     action = random.choice(['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_'])
+    #     history[cube_id].append([action, 1])
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -95,12 +100,12 @@ async def rotate_r(request: Request, m: str):
                 history[cube_id] = list()
 
             history[cube_id].append([m, 1])
-    return RedirectResponse('/')
+    return RedirectResponse('/?' + str(random.random()))
 
 
 @app.get('/MjAyMg==')
 async def congratulate(request: Request):
-    return {"2022:2022"}
+    return {"2022: Happy new year! By the way, try base64 decode this url"}
 
 if __name__ == '__main__':
     import uvicorn

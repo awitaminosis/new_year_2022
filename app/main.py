@@ -57,7 +57,7 @@ async def initial_scramble(cube_id):
     # history[cube_id].append(['u', 1])
     # history[cube_id].append(['r_', 1])
     # history[cube_id].append(['u_', 1])
-    # return
+    return
 
     iter_count = random.randint(2, 3)
     for i in range(iter_count):

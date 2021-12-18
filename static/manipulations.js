@@ -96,12 +96,13 @@ function drawCube(scene, off_x, off_y, off_z, cubeColors, idx) {
         'static/img/blue.png',          //5
         'static/img/black.png', //6 meaning empty
         //special
-        '/static/img/special/M.png',    //7
-        '/static/img/special/j.png',    //8
-        '/static/img/special/A.png',    //9
-        '/static/img/special/y.png',    //10
-        '/static/img/special/g.png',    //11
-        '/static/img/special/=.png',    //12
+        '/static/img/special/_.png',    //7
+        '/static/img/special/M.png',    //8
+        '/static/img/special/j.png',    //9
+        '/static/img/special/A.png',    //10
+        '/static/img/special/y.png',    //11
+        '/static/img/special/g.png',    //12
+        '/static/img/special/=.png',    //13
     ];
 
     //sequence from model:      front - top - down - left - right - back
@@ -135,16 +136,19 @@ function drawCube(scene, off_x, off_y, off_z, cubeColors, idx) {
             specialValue = 10
         }
         if (sorted.length == 1 && sorted[0] === 0) {
-            specialValue = 7
+            specialValue = 11
         }
         if (sorted.length == 2 && sorted[0] === 0 && sorted[1] == 2) {
-            specialValue = 11
+            specialValue = 8
         }
         if (sorted.length == 3 && sorted[0] === 0 && sorted[1] == 3 && sorted[2] == 4) {
             specialValue = 12
         }
         if (sorted.length == 2 && sorted[0] === 0 && sorted[1] == 4) {
-            specialValue = 12
+            specialValue = 13
+        }
+        if (sorted.length == 3 && sorted[0] === 0 && sorted[1] == 2 && sorted[2] == 4) {
+            specialValue = 13
         }
         if (specialValue !== false) {
             cubeColors[wPos] = specialValue

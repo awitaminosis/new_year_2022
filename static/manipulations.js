@@ -50,9 +50,9 @@ function populate() {
     idx = drawCube(scene, step, -step, 0, [F[1][1], 6, 6, 6, 6, 6], idx);
     idx = drawCube(scene, 2*step, -step, 0, [F[1][2], 6, 6, 6, R[1][0], 6], idx);
 
-    idx = drawCube(scene, 0, -2*step, 0, [F[2][0], 6, D[2][0], L[2][2], 6, 6], idx);
-    idx = drawCube(scene, step, -2*step, 0, [F[2][1], 6, D[2][1], 6, 6, 6], idx);
-    idx = drawCube(scene, 2*step, -2*step, 0, [F[2][2], 6, D[2][2], 6, R[2][0], 6], idx);
+    idx = drawCube(scene, 0, -2*step, 0, [F[2][0], 6, D[0][0], L[2][2], 6, 6], idx);
+    idx = drawCube(scene, step, -2*step, 0, [F[2][1], 6, D[0][1], 6, 6, 6], idx);
+    idx = drawCube(scene, 2*step, -2*step, 0, [F[2][2], 6, D[0][2], 6, R[2][0], 6], idx);
 
     //front - top - down - left - right - back
     //---right + left + top + bottom + front + back
@@ -72,17 +72,17 @@ function populate() {
     //front - top - down - left - right - back
     //---right + left + top + bottom + front + back
     //slice3
-    idx = drawCube(scene, 0, 0, -2*step, [6, U[0][0], 6, L[0][0], 6, B[0][0]], idx);
+    idx = drawCube(scene, 0, 0, -2*step, [6, U[0][0], 6, L[0][0], 6, B[0][2]], idx);
     idx = drawCube(scene, step, 0, -2*step, [6, U[0][1], 6, 6, 6, B[0][1]], idx);
-    idx = drawCube(scene, 2*step, 0, -2*step, [6, U[0][2], 6, 6, R[0][2], B[0][2]], idx);
+    idx = drawCube(scene, 2*step, 0, -2*step, [6, U[0][2], 6, 6, R[0][2], B[0][0]], idx);
 
-    idx = drawCube(scene, 0, -step, -2*step, [6, 6, 6, L[1][0], 6, B[1][0]], idx);
+    idx = drawCube(scene, 0, -step, -2*step, [6, 6, 6, L[1][0], 6, B[1][2]], idx);
     idx = drawCube(scene, step, -step, -2*step, [6, 6, 6, 6, 6, B[1][1]], idx);
-    idx = drawCube(scene, 2*step, -step, -2*step, [6, 6, 6, 6, R[1][2], B[1][2]], idx);
+    idx = drawCube(scene, 2*step, -step, -2*step, [6, 6, 6, 6, R[1][2], B[1][0]], idx);
 
-    idx = drawCube(scene, 0, -2*step, -2*step, [6, 6, D[0][0], L[2][0], 6, B[2][0]], idx);
-    idx = drawCube(scene, step, -2*step, -2*step, [6, 6, D[0][1], 6, 6, B[2][1]], idx);
-    idx = drawCube(scene, 2*step, -2*step, -2*step, [6, 6, D[0][2], 6, R[2][2], B[2][2]], idx);
+    idx = drawCube(scene, 0, -2*step, -2*step, [6, 6, D[2][0], L[2][0], 6, B[2][2]], idx);
+    idx = drawCube(scene, step, -2*step, -2*step, [6, 6, D[2][1], 6, 6, B[2][1]], idx);
+    idx = drawCube(scene, 2*step, -2*step, -2*step, [6, 6, D[2][2], 6, R[2][2], B[2][0]], idx);
 }
 
 

@@ -148,6 +148,9 @@ async def rotate_r(request: Request, m: str):
 async def congratulate(request: Request):
     return templates.TemplateResponse("found.html", {"request": request})
 
+@app.get('/2022')
+async def congratulate(request: Request):
+    return templates.TemplateResponse("found.html", {"request": request})
 
 if __name__ == '__main__':
     import uvicorn

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content%}
-<script src="{{ url_for('static', path='/three.js') }}"></script>
-<script src="{{ url_for('static', path='/OrbitControls.js') }}"></script>
+<script src="/static/three.js"></script>
+<script src="/static/OrbitControls.js"></script>
 <script>
     B = {{cube['_B']}};
     F = {{cube['_F']}};
@@ -16,7 +16,7 @@
     document.cookie = 'cube_id={{cube_id}};"/"';
 </script>
 
-<script src="{{ url_for('static', path='/manipulations.js') }}"></script>
+<script src="/static/manipulations.js"></script>
 
     <div class="tier tier-1">
         <a href="/move/r/" class="btn btn-primary mrl">R</a>  <a href="/move/r_/" class="btn btn-primary mll">R'</a>

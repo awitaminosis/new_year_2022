@@ -3,39 +3,27 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
-import uuid
 import random
-import json
-import redis
+import uuid
+
 from app.cube_manipulations import *
+from app.redis_manipulations import *
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-cache = redis.Redis(host='redis', port=6379, charset="utf-8", decode_responses=True)
-cache.flushdb()  # cleanup at start
-
 cubes = {}
 history_r = {}
 
-async def cache_set(cache_id, content):
-    cache.set(cache_id, json.dumps(content))
-
-async def cache_get(cache_id):
-    s = cache.get(cache_id)
-    if s == '' or s is None:
-        return None
-    else:
-        return json.loads(s)
-
-async def cache_get_clean(cache_id):
-    s = await cache_get(cache_id)
-    await cache_set(cache_id, list())
-    return s
-
 async def scramble_cube(c, cube_id):
+    """
+    Scrambles cube according to its history of scramble
+    :param c:
+    :param cube_id:
+    :return:
+    """
     history_r = await cache_get_clean(cube_id)
     if history_r is not None:
         for move in history_r:
@@ -70,6 +58,11 @@ async def scramble_cube(c, cube_id):
 
 
 async def initial_scramble(cube_id):
+    """
+    Perform initial cube randomizations
+    :param cube_id:
+    :return:
+    """
     await cache_set(cube_id, list())
     # return
 
@@ -111,12 +104,16 @@ async def respond_home(request: Request):
 
 @app.get("/move/{m}")
 async def rotate(request: Request, m: str):
+    """
+    Adds the move to the history of the cube scramble
+    :param request:
+    :param m:
+    :return:
+    """
     cube_id = request.cookies.get('cube_id', None)
     if m in ['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_']:
         if cube_id is not None:
             history_r = await cache_get_clean(cube_id)
-            # if history.get(cube_id, None) is None:
-            #     history[cube_id] = list()
 
             if history_r is None:
                 history_r = list()

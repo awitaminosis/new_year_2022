@@ -22,9 +22,8 @@ async def scramble_cube(c, cube_id):
     Scrambles cube according to its history of scramble
     :param c:
     :param cube_id:
-    :return:
     """
-    history_r = await cache_get_clean(cube_id)
+    history_r = await cache_get(cube_id)
     if history_r is not None:
         for move in history_r:
             if move[1] == 1:
@@ -54,7 +53,7 @@ async def scramble_cube(c, cube_id):
                     c.d_prime()
 
                 move[1] = 0
-    return c
+        await cache_set(cube_id, history_r)
 
 
 async def initial_scramble(cube_id):
@@ -64,14 +63,14 @@ async def initial_scramble(cube_id):
     :return:
     """
     await cache_set(cube_id, list())
-    # return
+    return
 
     iter_count = random.randint(1, 4)
-    history = list()
+    history_r = list()
     for i in range(iter_count):
         action = random.choice(['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_'])
-        history.append([action, 1])
-    await cache_set(cube_id, history)
+        history_r.append([action, 1])
+    await cache_set(cube_id, history_r)
 
 
 @app.get("/", response_class=HTMLResponse)

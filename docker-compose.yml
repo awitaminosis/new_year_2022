@@ -6,3 +6,5 @@ services:
       - 8080:8001
     volumes:
       - ./:/app/
+  redis:
+    image: "redis:alpine"

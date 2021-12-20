@@ -1,4 +1,6 @@
 import colorama
+import cubey as qb
+
 def print_cube(c):
     DIMENSION = 3
     iter_dim = range(DIMENSION)

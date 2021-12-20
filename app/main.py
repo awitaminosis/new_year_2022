@@ -5,24 +5,40 @@ from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 import uuid
 import random
-
-
-import cubey as qb
-
+import json
+import redis
 from app.cube_manipulations import *
-
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+cache = redis.Redis(host='redis', port=6379, charset="utf-8", decode_responses=True)
+cache.flushdb()  # cleanup at start
+
 cubes = {}
-history = {}
+history_r = {}
+
+async def cache_set(cache_id, content):
+    cache.set(cache_id, json.dumps(content))
+
+async def cache_get(cache_id):
+    s = cache.get(cache_id)
+    if s == '' or s is None:
+        return None
+    else:
+        return json.loads(s)
+
+async def cache_get_clean(cache_id):
+    s = await cache_get(cache_id)
+    await cache_set(cache_id, list())
+    return s
 
 async def scramble_cube(c, cube_id):
-    if history.get(cube_id, None) is not None:
-        for move in history[cube_id]:
+    history_r = await cache_get_clean(cube_id)
+    if history_r is not None:
+        for move in history_r:
             if move[1] == 1:
                 if move[0] == 'r':
                     c.r()
@@ -54,21 +70,15 @@ async def scramble_cube(c, cube_id):
 
 
 async def initial_scramble(cube_id):
-    history[cube_id] = list()
-
-    # history[cube_id].append(['r', 1])
-    # history[cube_id].append(['r', 1])
-    # history[cube_id].append(['f', 1])
-    # history[cube_id].append(['d', 1])
-    # history[cube_id].append(['u', 1])
-    # history[cube_id].append(['r_', 1])
-    # history[cube_id].append(['u_', 1])
+    await cache_set(cube_id, list())
     # return
 
     iter_count = random.randint(1, 4)
+    history = list()
     for i in range(iter_count):
         action = random.choice(['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_'])
-        history[cube_id].append([action, 1])
+        history.append([action, 1])
+    await cache_set(cube_id, history)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -87,10 +97,11 @@ async def respond_home(request: Request):
     cubes[cube_id] = c
 
     # print(cube_manipulations.cube_sides(c))
-    # print(cube_manipulations.print_cube(c))
+    # print(print_cube(c))
     # print(history)
 
-    printable_history = 'No history yet' if history.get(cube_id, None) is None else [x[0] for x in history.get(cube_id, None)]
+    printable_history = await cache_get(cube_id)
+    printable_history = 'No history yet' if printable_history is None else [x[0] for x in printable_history]
 
     return templates.TemplateResponse("home.html", {"request": request,
                                                     "cube": cube_sides(c),
@@ -98,16 +109,21 @@ async def respond_home(request: Request):
                                                     'history': printable_history
                                                     })
 
-
 @app.get("/move/{m}")
-async def rotate_r(request: Request, m: str):
+async def rotate(request: Request, m: str):
     cube_id = request.cookies.get('cube_id', None)
     if m in ['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_']:
         if cube_id is not None:
-            if history.get(cube_id, None) is None:
-                history[cube_id] = list()
+            history_r = await cache_get_clean(cube_id)
+            # if history.get(cube_id, None) is None:
+            #     history[cube_id] = list()
 
-            history[cube_id].append([m, 1])
+            if history_r is None:
+                history_r = list()
+                await cache_set(cube_id, history_r)
+
+            history_r.append([m, 1])
+            await cache_set(cube_id, history_r)
     return RedirectResponse('/?' + str(random.random()))
 
 

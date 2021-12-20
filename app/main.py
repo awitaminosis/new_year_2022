@@ -63,7 +63,7 @@ async def initial_scramble(cube_id):
     :return:
     """
     await cache_set(cube_id, list())
-    return
+    # return
 
     iter_count = random.randint(1, 4)
     history_r = list()

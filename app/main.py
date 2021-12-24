@@ -149,8 +149,16 @@ async def congratulate(request: Request):
     return templates.TemplateResponse("found.html", {"request": request})
 
 @app.get('/2022')
-async def congratulate(request: Request):
-    return templates.TemplateResponse("found.html", {"request": request})
+async def congratulate_decoded(request: Request):
+    return templates.TemplateResponse("found_decode.html", {"request": request})
+
+@app.get('/secret')
+async def secret():
+    """
+    yep, this is a 'secret' api endpoint;) congratulations! visit: /static/api.png
+    :return:
+    """
+    pass
 
 if __name__ == '__main__':
     import uvicorn

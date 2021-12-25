@@ -6,43 +6,38 @@ from starlette.responses import RedirectResponse
 import uuid
 import random
 
+from rubik.cube import Cube
 
-import cubey as qb
-######--{
-import colorama
-def print_cube(c):
-    DIMENSION = 3
-    iter_dim = range(DIMENSION)
-    string = ''
-
-    # Stringify all dimensions of the cube plus 1 for the header string
-    for i in range(DIMENSION + 1):
-        # First print the head string
-        if i == 0:
-            space = ' ' * DIMENSION
-            first_space = ' ' * int((DIMENSION / 2))
-            # The below order is the same order we add in the init method
-            string += colorama.Fore.BLACK + first_space + 'F' + space + 'B' + space + 'L' + space + 'R' + space + 'U' + space + 'D\n'
-        # Next print each row of each face
-        else:
-            for face in [c._F, c._B, c._L, c._R, c._U, c._D]:
-                for j in iter_dim:
-                    string += qb.color_strings[face[i - 1][j]]
-                string += ' '
-            string += '\n'
-    string += colorama.Style.RESET_ALL
-    return string
 
 def cube_sides(c):
+    s = c.flat_str()  # 'WWWWWWWWWOOOGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBYYYYYYYYY'
+
     return {
-        '_B': c._B,
-        '_D': c._D,
-        '_F': c._F,
-        '_L': c._L,
-        '_R': c._R,
-        '_U': c._U,
+        '_B': [[int(s[18]), int(s[19]), int(s[20])],
+               [int(s[30]), int(s[31]), int(s[32])],
+               [int(s[42]), int(s[43]), int(s[44])]
+               ],
+        '_D': [[int(s[45]), int(s[46]), int(s[47])],
+               [int(s[48]), int(s[49]), int(s[50])],
+               [int(s[51]), int(s[52]), int(s[53])]
+               ],
+        '_F': [[int(s[12]), int(s[13]), int(s[14])],
+               [int(s[24]), int(s[25]), int(s[26])],
+               [int(s[36]), int(s[37]), int(s[38])]
+               ],
+        '_L': [[int(s[9]),  int(s[10]), int(s[11])],
+               [int(s[21]), int(s[22]), int(s[23])],
+               [int(s[33]), int(s[34]), int(s[35])]
+               ],
+        '_R': [[int(s[15]), int(s[16]), int(s[17])],
+               [int(s[27]), int(s[28]), int(s[29])],
+               [int(s[39]), int(s[40]), int(s[41])]
+               ],
+        '_U': [[int(s[0]), int(s[1]), int(s[2])],
+               [int(s[3]), int(s[4]), int(s[5])],
+               [int(s[6]), int(s[7]), int(s[8])],
+               ],
     }
-######--}
 
 
 app = FastAPI()
@@ -58,29 +53,29 @@ async def scramble_cube(c, cube_id):
         for move in history[cube_id]:
             if move[1] == 1:
                 if move[0] == 'r':
-                    c.r()
+                    c.R()
                 if move[0] == 'r_':
-                    c.r_prime()
+                    c.Ri()
                 if move[0] == 'f':
-                    c.f()
+                    c.F()
                 if move[0] == 'f_':
-                    c.f_prime()
+                    c.Fi()
                 if move[0] == 'l':
-                    c.l()
+                    c.L()
                 if move[0] == 'l_':
-                    c.l_prime()
+                    c.Li()
                 if move[0] == 'b':
-                    c.b()
+                    c.B()
                 if move[0] == 'b_':
-                    c.b_prime()
+                    c.Bi()
                 if move[0] == 'u':
-                    c.u()
+                    c.U()
                 if move[0] == 'u_':
-                    c.u_prime()
+                    c.Ui()
                 if move[0] == 'd':
-                    c.d()
+                    c.D()
                 if move[0] == 'd_':
-                    c.d_prime()
+                    c.Di()
 
                 move[1] = 0
     return c
@@ -89,16 +84,11 @@ async def scramble_cube(c, cube_id):
 async def initial_scramble(cube_id):
     history[cube_id] = list()
 
-    # history[cube_id].append(['r', 1])
-    # history[cube_id].append(['r', 1])
-    # history[cube_id].append(['f', 1])
-    # history[cube_id].append(['d', 1])
-    # history[cube_id].append(['u', 1])
-    # history[cube_id].append(['r_', 1])
-    # history[cube_id].append(['u_', 1])
+    # for move in [ 'd',  'b_', 'b', 'd_']:
+    #     history[cube_id].append([move, 1])
     # return
 
-    iter_count = random.randint(1, 4)
+    iter_count = random.randint(2, 4)
     for i in range(iter_count):
         action = random.choice(['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_'])
         history[cube_id].append([action, 1])
@@ -112,19 +102,15 @@ async def respond_home(request: Request):
 
     c = cubes.get(cube_id, None)
     if c is None:
-        c = qb.Cube()
+        c = Cube("000000000333444222555333444222555333444222555111111111")
         await initial_scramble(cube_id)
 
     await scramble_cube(c, cube_id)
 
     cubes[cube_id] = c
 
-    # print(cube_manipulations.cube_sides(c))
-    # print(cube_manipulations.print_cube(c))
-    # print(history)
-
-    printable_history = 'No history yet' if history.get(cube_id, None) is None else [x[0] for x in history.get(cube_id, None)]
-
+    printable_history = 'Not yet' if history.get(cube_id, None) is None else [x[0] for x in history.get(cube_id, None)]
+    print(cube_sides(c))
     return templates.TemplateResponse("home.html", {"request": request,
                                                     "cube": cube_sides(c),
                                                     'cube_id': cube_id,

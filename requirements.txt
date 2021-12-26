@@ -1,6 +1,5 @@
 fastapi
 uvicorn[standard]
 jinja2
-cubey
-colorama
+rubik-cube
 redis

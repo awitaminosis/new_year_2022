@@ -3,11 +3,42 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
-import random
 import uuid
+import random
 
-from app.cube_manipulations import *
-from app.redis_manipulations import *
+from rubik.cube import Cube
+
+
+def cube_sides(c):
+    s = c.flat_str()  # 'WWWWWWWWWOOOGGGRRRBBBOOOGGGRRRBBBOOOGGGRRRBBBYYYYYYYYY'
+
+    return {
+        '_B': [[int(s[18]), int(s[19]), int(s[20])],
+               [int(s[30]), int(s[31]), int(s[32])],
+               [int(s[42]), int(s[43]), int(s[44])]
+               ],
+        '_D': [[int(s[45]), int(s[46]), int(s[47])],
+               [int(s[48]), int(s[49]), int(s[50])],
+               [int(s[51]), int(s[52]), int(s[53])]
+               ],
+        '_F': [[int(s[12]), int(s[13]), int(s[14])],
+               [int(s[24]), int(s[25]), int(s[26])],
+               [int(s[36]), int(s[37]), int(s[38])]
+               ],
+        '_L': [[int(s[9]),  int(s[10]), int(s[11])],
+               [int(s[21]), int(s[22]), int(s[23])],
+               [int(s[33]), int(s[34]), int(s[35])]
+               ],
+        '_R': [[int(s[15]), int(s[16]), int(s[17])],
+               [int(s[27]), int(s[28]), int(s[29])],
+               [int(s[39]), int(s[40]), int(s[41])]
+               ],
+        '_U': [[int(s[0]), int(s[1]), int(s[2])],
+               [int(s[3]), int(s[4]), int(s[5])],
+               [int(s[6]), int(s[7]), int(s[8])],
+               ],
+    }
+
 
 app = FastAPI()
 
@@ -28,29 +59,29 @@ async def scramble_cube(c, cube_id):
         for move in history_r:
             if move[1] == 1:
                 if move[0] == 'r':
-                    c.r()
+                    c.R()
                 if move[0] == 'r_':
-                    c.r_prime()
+                    c.Ri()
                 if move[0] == 'f':
-                    c.f()
+                    c.F()
                 if move[0] == 'f_':
-                    c.f_prime()
+                    c.Fi()
                 if move[0] == 'l':
-                    c.l()
+                    c.L()
                 if move[0] == 'l_':
-                    c.l_prime()
+                    c.Li()
                 if move[0] == 'b':
-                    c.b()
+                    c.B()
                 if move[0] == 'b_':
-                    c.b_prime()
+                    c.Bi()
                 if move[0] == 'u':
-                    c.u()
+                    c.U()
                 if move[0] == 'u_':
-                    c.u_prime()
+                    c.Ui()
                 if move[0] == 'd':
-                    c.d()
+                    c.D()
                 if move[0] == 'd_':
-                    c.d_prime()
+                    c.Di()
 
                 move[1] = 0
         await cache_set(cube_id, history_r)
@@ -81,7 +112,7 @@ async def respond_home(request: Request):
 
     c = cubes.get(cube_id, None)
     if c is None:
-        c = qb.Cube()
+        c = Cube("000000000333444222555333444222555333444222555111111111")
         await initial_scramble(cube_id)
 
     await scramble_cube(c, cube_id)
@@ -128,8 +159,16 @@ async def congratulate(request: Request):
     return templates.TemplateResponse("found.html", {"request": request})
 
 @app.get('/2022')
-async def congratulate(request: Request):
-    return templates.TemplateResponse("found.html", {"request": request})
+async def congratulate_decoded(request: Request):
+    return templates.TemplateResponse("found_decode.html", {"request": request})
+
+@app.get('/secret')
+async def secret():
+    """
+    yep, this is a 'secret' api endpoint;) congratulations! visit: /static/api.png
+    :return:
+    """
+    pass
 
 if __name__ == '__main__':
     import uvicorn

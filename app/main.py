@@ -6,6 +6,7 @@ from starlette.responses import RedirectResponse
 import uuid
 import random
 
+from app.redis_manipulations import *
 from rubik.cube import Cube
 
 

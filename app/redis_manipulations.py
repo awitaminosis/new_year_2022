@@ -6,10 +6,12 @@ cache.flushdb()  # cleanup at start
 
 async def cache_set(cache_id, content):
     """seter"""
+    cache_id = str(cache_id)
     cache.set(cache_id, json.dumps(content))
 
 async def cache_get(cache_id):
     """getter"""
+    cache_id = str(cache_id)
     s = cache.get(cache_id)
     if s == '' or s is None:
         return None

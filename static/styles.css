@@ -1,5 +1,5 @@
 h1 {
-    color: green;
+    color: #002022;
 }
 
 .cube {
@@ -50,4 +50,8 @@ h1 {
 }
 .history {
     display: none;
+}
+
+.walktrhough p {
+    color: black;
 }

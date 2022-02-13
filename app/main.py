@@ -95,7 +95,7 @@ async def initial_scramble(cube_id):
 
 
 @app.get("/", response_class=HTMLResponse)
-async def respond_home(request: Request):
+async def home(request: Request):
     cube_id = request.cookies.get('cube_id', None)
     if cube_id is None:
         cube_id = uuid.uuid4()
@@ -119,7 +119,7 @@ async def respond_home(request: Request):
 
 
 @app.get("/move/{m}")
-async def rotate_r(request: Request, m: str):
+async def rotate(request: Request, m: str):
     cube_id = request.cookies.get('cube_id', None)
     if m in ['r', 'r_', 'f', 'f_', 'l', 'l_', 'b', 'b_', 'u', 'u_', 'd', 'd_']:
         if cube_id is not None:

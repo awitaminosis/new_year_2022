@@ -36,7 +36,6 @@ function populate() {
     step = 1.1
     idx = 0;
 
-//    idx = drawCube(scene, 0, 0, 0, [0, 1, 2, 3, 4, 5], idx);
 
     //front - top - down - left - right - back
     //---right + left + top + bottom + front + back

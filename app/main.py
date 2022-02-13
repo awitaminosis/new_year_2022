@@ -156,6 +156,10 @@ async def congratulate(request: Request):
 async def congratulate_decoded(request: Request):
     return templates.TemplateResponse("found_decode.html", {"request": request})
 
+@app.get("/help")
+async def walkthrough(request: Request):
+    return templates.TemplateResponse("walkthrough.html", {"request": request})
+
 
 @app.get("/secret")
 async def secret():

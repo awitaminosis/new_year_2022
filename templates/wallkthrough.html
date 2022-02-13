@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<h1>Walkthrough</h1>
+<p>It is a New Year puzzle to entertain friends</p>
+<p>There are three levels of difficulty. Every next one is more difficult but also a way more fun.</p>
+
+<h2>Lvl 0</h2>
+<p>
+    The main thing that attracts attention is the cube. Of course, it is the Rubik's cube.
+</p>
+<p>Also, there are control buttons. Maybe you are already familiar with the rotation notation, or maybe you could click on them and notice which part of the cube is rotating and in which direction</p>
+
+<p>If solving a cube ('a cube' because you can reroll it if you clear browser cookies or use an incognito mode) is hard by itself, then you can use a hint.</p>
+<p>A good-old-trick is to see what's there on the page but hardly visible. Just Ctrl+a. You will notice there is a 'hint' down there. If you press it you will see the cube rotations sequence.</p>
+<img src="/static/help/hint.png">
+<p>Well... If you can't do Rubik's cube 'the usual way', if you know how it was scrambled you can unscramble it by doing things in reverse order.</p>
+
+<p>I assume at this point you have unscrambled it. Well done!</p>
+
+<h2>Lvl 1</h2>
+<p>As you can see there is a writings on the top side of the cube. Usually this color is located on the top side of the cube. (Also, there is a pun with the site's URL: 'top' scramble).</p>
+<img src="/static/help/writings.png">
+<p>If you assemble these writings you will get '/MjAyMg=='. A rule of a thumb if it starts with '/' then it is a path. Or some URL. Let's visit it</p>
+<img src="/static/help/lvl1">
+<p>Hooray, you have bested the lvl 1!</p>
+
+<h2>Lvl 2</h2>
+<p>But what's that strange mentioning 'the url is a base64 encoded something'? If you haven't noticed that already ('==' at the end of a string is a solid sign of this encoding), the 'MjAyMg==' is an encoded string.</p>
+<p>So let's decode it!</p>
+<p>There are a lot of ways to do it. Arguably, the most quick one is to use some online decoder. Something like <a href="https://www.asciitohex.com/">asciitohex.com</a>.</p>
+<p>Hmm... It's '2022'</p>
+<p>But wait, if the first level picture was served via URL, why not try to URL-visit the second one also? It goes <a href="https://topscramble.herokuapp.com/2022">like this</a></p>
+<img src="/static/found_decoded.png">
+<p>Well done!</p>
+
+<h2>Lvl 3</h2>
+<p>Ready for more hardcorish? :)</p>
+<p>For this one you have to wonder 'what it is made of?' or 'what else there could be?'.</p>
+<p>And test your hunch - yes, it is fastapi. Meaning there are probably two 'special' URLs of OpenAPI (or Swagger) which show code overview.</p>
+<ul>
+    <li><a href="/docs">/docs</a></li>
+    <li><a href="/redoc">/redoc</a></li>
+</ul>
+<img src="/static/help/docs.png">
+<div>Or, alternatively</div>
+<img src="/static/help/redoc.png">
+<p>That was a hard one!</p>
+<p>Let's <a href="/static/api.png">visit</a> the mentioned URL</p>
+<img src="/static/api.png">
+
+<h3>Well done!</h3>
+{% endblock %}
